@@ -1,5 +1,5 @@
 # Use a lightweight Python base image
-FROM python:3.9-slim
+FROM python:3.9-slim as builder
 
 # Install PostgreSQL development tools
 RUN apt-get update && apt-get install -y \
@@ -10,17 +10,20 @@ RUN apt-get update && apt-get install -y \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install the wheel package to avoid legacy warnings
-RUN pip install --no-cache-dir wheel
-
 # Set working directory
 WORKDIR /app
 
-# Copy requirements.txt and install Python dependencies
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
+# Final image
+FROM python:3.9-slim
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Copy application files
+WORKDIR /app
 COPY . .
 
 # Start the application
