@@ -24,6 +24,11 @@ def get_db():
 # Load a TTS model (using default pretrained model for simplicity)
 tts = TTS(model_name="tts_models/en/ljspeech/tacotron2-DDC", progress_bar=False, gpu=False)
 
+# Root endpoint
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to Quiz App Backend"}
+
 @app.post("/create-quiz", response_model=schemas.Quiz)
 def create_quiz(quiz: schemas.QuizCreate, db: Session = Depends(get_db)):
     """
