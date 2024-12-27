@@ -1,6 +1,9 @@
 #!/bin/sh
 
-# Set the default port to 8000 if $PORT is not provided
+# Log the value of $PORT
+echo "PORT value is: $PORT"
+
+# Set a default value if $PORT is empty
 PORT=${PORT:-8000}
 
 # Start the application
