@@ -20,8 +20,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
+# Copy the application code and startup script
 COPY . .
+RUN chmod +x start.sh  # Make the script executable
 
-# Start the application
-CMD ["python", "start.py"]
+# Start the application using the shell script
+CMD ["./start.sh"]
